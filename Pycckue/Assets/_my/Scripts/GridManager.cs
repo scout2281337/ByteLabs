@@ -36,10 +36,11 @@ public class GridManager : MonoBehaviour
             {
                 var spawnedTile = Instantiate(_tilePrefab, new Vector3(x + 0.5f, 0, y + 0.5f) * _tileSize + transform.position, Quaternion.Euler(90, 0, 0), this.transform);
                 spawnedTile.name = $"Tile {x} {y}";
-                var isOffset = (x % 2 == 0 && y % 2 != 0) || (x % 2 != 0 && y % 2 == 0);
-                spawnedTile.Init(isOffset, _tileSize);
-
-                _tiles[new Vector2(spawnedTile.transform.position.x, spawnedTile.transform.position.z)] = spawnedTile;
+                Vector2 ind = new Vector2(x, y);
+                spawnedTile.Init(_tileSize, ind);
+                if(y<4) spawnedTile.State(TileState.emptyZone);
+                else spawnedTile.State(TileState.enemyZone);
+                _tiles[ind] = spawnedTile;
             }
 
         }
@@ -54,7 +55,7 @@ public class GridManager : MonoBehaviour
 
     public void ActivateGrid(GameState state)
     {
-        Debug.Log("ActivateGrid");
+        //Debug.Log("ActivateGrid");
         if (state == GameState.HeroesTurn || state == GameState.GenerateGrid)
             gameObject.SetActive(true);
         else

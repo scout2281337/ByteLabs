@@ -24,15 +24,16 @@ public class GameManager : MonoBehaviour
     {
         gameState = newState;
         OnGameStateChanged?.Invoke(newState);
-        Debug.Log("---!---");
+        Debug.Log("State Changing...");
         switch (newState)
         {
             case GameState.GenerateGrid:
                 GridManager.instance.GenerateGrid();
-                ChangeState(GameState.HeroesTurn);
+                ChangeState(GameState.SpawnHeroes);
                 break;
             case GameState.SpawnHeroes:
-                //UnitManager.Instance.SpawnHeroes();
+                UnitManager.instance.SpawnHeroes();
+                ChangeState(GameState.HeroesTurn);
                 break;
             case GameState.SpawnEnemies:
                 //UnitManager.Instance.SpawnEnemies();
@@ -41,9 +42,6 @@ public class GameManager : MonoBehaviour
                 Debug.Log("State::HeroesTurn");
                 break;
             case GameState.EnemiesTurn:
-                break;
-            case GameState.HeroMove:
-                Debug.Log("State::HeroesMoves");
                 break;
             default:
                 Debug.Log("State::Undefined");
@@ -60,6 +58,5 @@ public enum GameState
     SpawnHeroes = 1,
     SpawnEnemies = 2,
     HeroesTurn = 3,
-    EnemiesTurn = 4,
-    HeroMove = 5
+    EnemiesTurn = 4
 }
