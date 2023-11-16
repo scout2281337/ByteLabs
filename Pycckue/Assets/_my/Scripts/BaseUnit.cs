@@ -68,6 +68,14 @@ public class BaseUnit : MonoBehaviour
     {
         m_attack = true;
     }
+    public void GetDamage(float d)
+    {
+        m_health.GetDamage(d);
+        if (!m_health.IsAlive())
+        {
+            gameObject.SetActive(false);
+        }
+    }
     void UpdateAnimation()
     {
         if (m_isMoving)
@@ -86,5 +94,6 @@ public class BaseUnit : MonoBehaviour
         m_attack = false;
 
     }
+
 
 }

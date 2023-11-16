@@ -7,7 +7,7 @@ public class Tile : MonoBehaviour
     [SerializeField] private Color _baseColor;
     [SerializeField] private SpriteRenderer _renderer;
     [SerializeField] private GameObject _highlight; 
-    [SerializeField] private GameObject _highlightEnter;
+    [SerializeField] private GameObject _highlightForAttack;
     [SerializeField] public BaseUnit _attachedUnit;
     [SerializeField] private Vector2 _index;
     public TileState currentState;
@@ -27,16 +27,22 @@ public class Tile : MonoBehaviour
         {
             _highlight.SetActive(true);
         }
+        else if (currentState == TileState.enemy && PlayerController.instance.m_playerState == PlayerState.ChangeHero)
+        {
+            _highlightForAttack.SetActive(true);
+        }
     }
 
     void OnMouseExit()
     {
         _highlight.SetActive(false);
+        _highlightForAttack.SetActive(false);
     }
 
     private void OnMouseDown()
     {
         _highlight.SetActive(false);
+        _highlightForAttack.SetActive(false);
     }
 
     public void State(TileState state)

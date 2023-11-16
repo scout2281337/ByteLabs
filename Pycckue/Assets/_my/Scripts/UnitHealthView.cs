@@ -9,7 +9,7 @@ public class UnitHealthView : MonoBehaviour
     [SerializeField] private Image _bar;
     public void ReCalculateHealthView(Helth h)
     {
-        _bar.fillAmount = h._maxHealth / h._curHealth;
+        _bar.fillAmount = h._curHealth / h._maxHealth;
         _can.transform.rotation = Quaternion.Euler(90, 0, 0);
             //.LookAt(Camera.main.transform.position);
     }
