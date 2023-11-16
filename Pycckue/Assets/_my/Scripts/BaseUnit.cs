@@ -9,6 +9,8 @@ public class BaseUnit : MonoBehaviour
     [SerializeField] private bool m_isMoving = false;
     [SerializeField] private Vector3 m_target;
     [SerializeField] Renderer m_rend;
+    [HideInInspector] private Helth m_health;
+    [HideInInspector] private UnitHealthView m_healthView;
     private Rigidbody m_rig;
     private Animator m_anim;
     [HideInInspector] public Tile m_attachedTile;
@@ -18,6 +20,8 @@ public class BaseUnit : MonoBehaviour
     {
         m_rig = GetComponent<Rigidbody>();
         m_anim = GetComponent<Animator>();
+        m_health = GetComponent<Helth>();
+        m_healthView = GetComponent<UnitHealthView>();
     }
 
     private void Update()
@@ -32,6 +36,7 @@ public class BaseUnit : MonoBehaviour
             }
         }
 
+        m_healthView.ReCalculateHealthView(m_health);
         UpdateAnimation();
     }
     public void StartMove(Vector3 target)
