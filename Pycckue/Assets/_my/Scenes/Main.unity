@@ -774,7 +774,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _units:
   - {fileID: 1667084727116197905, guid: 4a21f60c21e669b4dae2a6c80b7e4600, type: 3}
-  - {fileID: 4342435788977374294, guid: 8720a5b1a8d280f42b8143da949645de, type: 3}
+  - {fileID: -1068345639068419548, guid: 8720a5b1a8d280f42b8143da949645de, type: 3}
   - {fileID: 1667084727116197905, guid: 4a21f60c21e669b4dae2a6c80b7e4600, type: 3}
   _unitsEnemy:
   - {fileID: 8231265726290414270, guid: bce0f8feea8fef840b6429dbd32e7085, type: 3}
@@ -796,6 +796,7 @@ MonoBehaviour:
   target: {x: 0, y: 0, z: 0}
   m_heroes: []
   m_currentHero: {fileID: 0}
+  m_unitMan: {fileID: 452093296}
   m_playerState: 0
 --- !u!1001 &496039814
 PrefabInstance:

@@ -3531,6 +3531,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Wep_Mace_Large_05
       objectReference: {fileID: 0}
+    - target: {fileID: 1203556042648826, guid: 16e0ffc5e33b2b54da4299f7314a2dd5, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4591869919937256, guid: 16e0ffc5e33b2b54da4299f7314a2dd5, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.022
@@ -3596,6 +3600,10 @@ PrefabInstance:
     - target: {fileID: 1862154709857532, guid: 4330ec3eeba18aa4d98159a232f4ac9f, type: 3}
       propertyPath: m_Name
       value: SM_Chr_Attach_Undead_Knight_Helmet_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 1862154709857532, guid: 4330ec3eeba18aa4d98159a232f4ac9f, type: 3}
+      propertyPath: m_Layer
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4253713864816946, guid: 4330ec3eeba18aa4d98159a232f4ac9f, type: 3}
       propertyPath: m_LocalPosition.x

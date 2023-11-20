@@ -5,7 +5,7 @@ using UnityEngine;
 public class UnitManager : MonoBehaviour
 {
     public static UnitManager instance;
-    [SerializeField] private BaseUnit[] _units;
+    [SerializeField] internal BaseUnit[] _units;
     [SerializeField] private BaseUnit[] _unitsEnemy;
 
     private void Awake()
@@ -16,9 +16,11 @@ public class UnitManager : MonoBehaviour
 
     public void SpawnHeroes()
     {
+        PlayerController.instance.m_heroes = new BaseUnit[3];
         for (int i = 0; i < _units.Length; i++)
         {
             var un = Instantiate(_units[i].gameObject);
+            PlayerController.instance.m_heroes[i] = un.GetComponent<BaseUnit>();
             var spawnTile = GridManager.instance.GetTileAtPosition(new Vector2(i, 0));
             un.transform.position = spawnTile.transform.position;
             un.GetComponent<BaseUnit>().m_attachedTile = spawnTile;
@@ -26,6 +28,9 @@ public class UnitManager : MonoBehaviour
             spawnTile._attachedUnit = un.GetComponent<BaseUnit>();
         }
 
+    }
+    public void SpawnEnemy()
+    {
         for (int i = 0; i < _unitsEnemy.Length; i++)
         {
             var un = Instantiate(_unitsEnemy[i].gameObject);

@@ -54,6 +54,7 @@ Shader "Cartoon FX/Remaster/Particle Screen Distortion"
 		ZWrite Off
 		Cull  Off
 
+/*** URP ***/
 		//====================================================================================================================================
 		// Universal Rendering Pipeline
 
@@ -115,6 +116,7 @@ Shader "Cartoon FX/Remaster/Particle Screen Distortion"
 				#pragma shader_feature_local _ _ALPHATEST_ON
 				#pragma shader_feature_local _ _DEBUG_VISUALIZE_DISTORTION
 
+				#define _CameraOpaqueTexture _CameraSortingLayerTexture
 				#define CFXR_URP
 				#define DISABLE_SOFT_PARTICLES
 				#define CFXR_SCREEN_DISTORTION_SHADER
@@ -123,7 +125,9 @@ Shader "Cartoon FX/Remaster/Particle Screen Distortion"
 				ENDCG
 			}
 		}
+/*** END URP ***/
 
+/*** BIRP ***/
 		//====================================================================================================================================
 		// Built-in Rendering Pipeline
 
@@ -169,6 +173,7 @@ Shader "Cartoon FX/Remaster/Particle Screen Distortion"
 				ENDCG
 			}
 		}
+/*** END BIRP ***/
 	}
 	
 	CustomEditor "CartoonFX.MaterialInspector"

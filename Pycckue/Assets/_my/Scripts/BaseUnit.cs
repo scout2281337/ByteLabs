@@ -11,10 +11,12 @@ public class BaseUnit : MonoBehaviour
     [SerializeField] Renderer m_rend;
     [HideInInspector] private Helth m_health;
     [HideInInspector] private UnitHealthView m_healthView;
+    [HideInInspector] public Tile m_attachedTile;
+    public bool haveAttackPoint = true;
+    public bool haveWalkPoint = true;
+
     private Rigidbody m_rig;
     private Animator m_anim;
-    [HideInInspector] public Tile m_attachedTile;
-
     bool m_attack = false;
     private void Start()
     {
@@ -43,12 +45,13 @@ public class BaseUnit : MonoBehaviour
     {
         m_isMoving = true;
         m_target = target;
+        haveWalkPoint = false;
     }
     public void EndMove()
     {
         transform.LookAt(transform.position + Vector3.forward);
         m_rig.velocity = Vector3.zero;
-        m_isMoving = false;
+        m_isMoving = false;      
         PlayerController.instance.HeroMovedToTarget();
     }
     public void ChangeTile(Tile tile)
@@ -64,9 +67,15 @@ public class BaseUnit : MonoBehaviour
         if(ch) m_rend.material.SetFloat("_OtlWidth", 4.0f);
         else m_rend.material.SetFloat("_OtlWidth", 0f);
     }
-    public void Attack()
+    public virtual void StartAttack(Vector3 target)
     {
         m_attack = true;
+        haveAttackPoint = false;
+        EndAttack();
+    }
+    public void EndAttack()
+    {
+
     }
     public void GetDamage(float d)
     {

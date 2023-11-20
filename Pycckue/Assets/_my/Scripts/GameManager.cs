@@ -33,15 +33,17 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.SpawnHeroes:
                 UnitManager.instance.SpawnHeroes();
-                ChangeState(GameState.HeroesTurn);
+                ChangeState(GameState.SpawnEnemies);
                 break;
             case GameState.SpawnEnemies:
-                //UnitManager.Instance.SpawnEnemies();
+                UnitManager.instance.SpawnEnemy();
+                ChangeState(GameState.HeroesTurn);
                 break;
             case GameState.HeroesTurn:
                 Debug.Log("State::HeroesTurn");
                 break;
             case GameState.EnemiesTurn:
+                ChangeState(GameState.HeroesTurn);
                 break;
             default:
                 Debug.Log("State::Undefined");

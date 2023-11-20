@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public Vector3 target;
     [SerializeField] public BaseUnit[] m_heroes;
     [SerializeField] public BaseUnit m_currentHero;
+    [SerializeField] internal UnitManager m_unitMan;
 
     private GameState m_gameState;
     public PlayerState m_playerState;
@@ -18,14 +19,28 @@ public class PlayerController : MonoBehaviour
         m_playerState = PlayerState.Idle;
         GameManager.OnGameStateChanged += StateChanged;
     }
-    
+
+
     public void StateChanged(GameState state)
     {
         m_gameState = state;
+        if(m_gameState == GameState.HeroesTurn)
+        {
+            for(int i = 0; i < m_heroes.Length; i++)
+            {
+                m_heroes[i].haveAttackPoint = true;
+                m_heroes[i].haveWalkPoint = true;
+            }
+        }
     }
 
     private void Update()
     {
+        if (m_gameState == GameState.HeroesTurn)
+        {
+            CheckHeroes();
+        }
+        
         if (Input.GetMouseButtonUp(0) && m_gameState == GameState.HeroesTurn && m_playerState != PlayerState.HeroMove)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -39,7 +54,7 @@ public class PlayerController : MonoBehaviour
                     if (tile == null) Debug.Log("undefined tile");
                     if (m_playerState == PlayerState.ChangeHero)
                     {
-                        if (tile.currentState == TileState.emptyZone)
+                        if (tile.currentState == TileState.emptyZone && m_currentHero != null && m_currentHero.haveWalkPoint)
                         {
                             target = new Vector3(tile.transform.position.x, tile.transform.position.y, tile.transform.position.z);
                             m_playerState = PlayerState.HeroMove;
@@ -49,20 +64,26 @@ public class PlayerController : MonoBehaviour
                         }
                         else if(tile.currentState == TileState.hero)
                         {
-                            if (m_currentHero != null) m_currentHero.ChangeColor(false);
-                            m_currentHero = tile._attachedUnit;
-                            m_currentHero.ChangeColor(true);
-                            m_playerState = PlayerState.ChangeHero;
+                            if (tile._attachedUnit.haveWalkPoint || tile._attachedUnit.haveAttackPoint)
+                            {
+                                if (m_currentHero != null) m_currentHero.ChangeColor(false);
+                                m_currentHero = tile._attachedUnit;
+                                m_currentHero.ChangeColor(true);
+                                m_playerState = PlayerState.ChangeHero;
+                            }
                         }
                     }
                     else if (m_playerState == PlayerState.Idle)
                     {
                         if (tile.currentState == TileState.hero)
                         {
-                            if(m_currentHero!=null) m_currentHero.ChangeColor(false);
-                            m_currentHero = tile._attachedUnit;
-                            m_currentHero.ChangeColor(true);
-                            m_playerState = PlayerState.ChangeHero;
+                            if (tile._attachedUnit.haveWalkPoint || tile._attachedUnit.haveAttackPoint)
+                            {
+                                if (m_currentHero != null) m_currentHero.ChangeColor(false);
+                                m_currentHero = tile._attachedUnit;
+                                m_currentHero.ChangeColor(true);
+                                m_playerState = PlayerState.ChangeHero;
+                            }
                         }
                     }
                 }
@@ -74,7 +95,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButtonDown(1) && m_gameState == GameState.HeroesTurn && m_playerState == PlayerState.ChangeHero)
+        if (Input.GetMouseButtonDown(1) && m_gameState == GameState.HeroesTurn && m_playerState == PlayerState.ChangeHero && m_currentHero.haveAttackPoint)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
@@ -87,15 +108,13 @@ public class PlayerController : MonoBehaviour
                     if (tile == null) Debug.Log("undefined tile");
 
                     if (tile.currentState == TileState.enemy)
-                    {
-                        m_currentHero.Attack();
-                        tile._attachedUnit.GetDamage(1);
+                    {                        
+                        m_currentHero.StartAttack(tile._attachedUnit.transform.position + Vector3.up);                       
                     }
                     else if (tile.currentState == TileState.enemyZone)
                     {
 
-                    }
-                    
+                    }                   
                 }
             }
             else
@@ -103,6 +122,22 @@ public class PlayerController : MonoBehaviour
                 m_currentHero.ChangeColor(false);
                 m_playerState = PlayerState.Idle;
             }
+        }
+    }
+    public void CheckHeroes()
+    {
+        bool flag = true;
+        for (int i = 0; i < m_heroes.Length; i++)
+        {
+            if(m_heroes[i].haveAttackPoint || m_heroes[i].haveWalkPoint)
+            {
+                flag = false;
+            }
+        }
+        if (flag)
+        {
+            GameManager.instance.ChangeState(GameState.EnemiesTurn);
+            Debug.Log("aaaaaaaaaa");
         }
     }
     public void HeroMovedToTarget()
